@@ -35,7 +35,7 @@ public class SortsTest {
     public void testSort(Consumer<Integer[]> func) {
         Integer[] arr = makeTestArray();
         func.accept(arr);
-        assertTrue(sorted(arr));
+        assertTrue(sorted(arr);
     }
 
     @Test

@@ -1,5 +1,7 @@
 package edu.grinnell.csc207.sortslab;
 
+import java.util.Arrays;
+
 /**
  * A collection of sorting algorithms over generic arrays.
  */
@@ -105,12 +107,57 @@ public class Sorts {
      * @param <T> the carrier type of the array
      * @param arr the array to sort
      */
-    public static <T extends Comparable<? super T>> void mergeSort(T[] arr) {
-        // TODO: fill me in!
+    public static <T extends Comparable<? super T>> void mergeSort(T[] arr, int hi, int lo) {
+        if(lo < hi){
+            int mid = lo + (hi - lo) / 2;
+            
+            mergeSort(arr, lo, mid);
+            mergeSort(arr, mid + lo, hi);
+            
+            merge(arr, lo, hi);
+        }
         
+    }
+    
+    public static <T extends Comparable<? super T>> T[] merge(T[] arr, int hi, int lo) {
+        int mid = lo + (hi - lo) / 2;
+        
+        T[] arr1;
+        arr1 = Arrays.copyOfRange(arr, lo, hi);
+        
+        int j = 0;
+        int k = 0;
+        
+        for(int i = 0; j < mid && k <= hi; i++){
+            if(arr[k].compareTo(arr[j]) <= 0){
+                arr[i] = arr1[k];
+                k++;
+            }
+            else{
+                arr[i] = arr1[j];
+                j++;
+            }
+        }
+        if(k != (mid - lo)){
+            for(int l = k; l < (mid - lo); l++){
+                arr[l] = arr1[k];
+                k++;
+            }
+        } else if(j != (hi - mid)){
+            for(int m = j; m < (hi - mid); m++){
+                arr[m] = arr1[j];
+                j++;
+            }
+        }
+        return arr1;
         
     }
 
+    
+    
+    
+    
+    
     /**
      * Sorts the array according to the quick sort algorithm:
      * <pre>
@@ -120,7 +167,30 @@ public class Sorts {
      * @param <T>
      * @param arr
      */
-    public static <T extends Comparable<? super T>> void quickSort(T[] arr) {
-        // TODO: fill me in!
+    public static <T extends Comparable<? super T>> void quickSort(T[] arr, int lo, int hi) {
+        if(lo < hi){
+            int pivot = pivoting(arr, lo, hi);
+            
+            quickSort(arr, lo, hi - 1);
+            quickSort(arr, lo + 1, hi);
+        }
     }
+    
+    public static <T extends Comparable<? super T>> int pivoting(T[] arr, int lo, int hi) {
+        T pivot = arr[hi];
+        int i = lo - 1;
+        
+        for(int j = lo; j < hi; j++){
+            if (arr[j].compareTo(pivot) <= 0){
+                i++;
+                
+                swap(arr, j, i);
+            }
+        }
+        
+        swap(arr, (i + 1), hi);
+        
+        return i + 1;
+    }
+    
 }
